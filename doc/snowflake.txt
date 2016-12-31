@@ -1,0 +1,97 @@
+*snowflake*	Vim plguin for Flow.
+
+Version: 0.1.0
+Author: Shinya Ohynagi <sohyanagi@gmail.com>
+Repository: http://github.com/heavenshell/vim-snowflake/
+License: BSD, see LICENSE for more details.
+
+==============================================================================
+CONTENTS						*snowflake-contents*
+
+Introduction		|snowflake-introduction|
+Install			|snowflake-install|
+Tutorial		|snowflake-tutorial|
+Variables		|snowflake-variables|
+Changelogs		|snowflake-changelog|
+
+==============================================================================
+INTRODUCTION						*snowflake-introduction*
+
+|vim-snowflake| is an asynchronous Python source code checker.
+
+It detect source code change immediately and upddate results(no need to save buffer).
+
+==============================================================================
+INSTALL							*snowflake-install*
+
+Install the distributed files into Vim runtime directory which is usually
+~/.vim/, or $HOME/vimfiles on Windows.
+
+If you use built in `package`, you should extract the
+file into '~/.vim/pack/*/start' directory.
+
+==============================================================================
+TUTORIAL						*snowflake-tutorial*
+
+Configure:
+
+snowflake.vim execute `snowflake#init()` on start.
+
++ Add |autocmd| settings.
+
+==============================================================================
+VARIABLES					*snowflake-variables*
+g:snowflake_linters				*g:g:snowflake_linters*
+		Python style checker's name.
+
+		Default value is 'flake8'
+
+g:snowflake_enable_quickfix			*g:snowflake_enable_quickfix*
+		Enable to open QuickFix window automatically
+		(only flow project)
+
+		Default value is 0(Do not open automatically)
+
+g:snowflake_ignore				*g:snowflake_ignore*
+		Ignore options.
+
+		Default value is ''(nothing to ignore)
+
+g:snowflake_callbacks				*g:snowflake_callbacks*
+		Hook points. User can inject various functions to snowflke.
+
+		*before_init* : Inject to snowflake#init() before called
+		*after_init* : Inject to snowflake#init() after called
+		*before_run* : Inject to snowflake#flake8#run() before called
+		*after_run* : Inject to snowflake#flake8#run() after called
+
+e.g.
+- Execute checker write after open source code.
+>
+  function! s:snowflake_after(...)
+    execute ':QuickfixStatusEnable'
+    execute ':HierUpdate'
+  endfunction
+
+  let g:snowflake_callbacks = {
+    \ 'after_init': function('snowflake#flake8#run'),
+    \ }
+
+- Show QuickFix error in statusline, and highlight QuickFix errors run
+  quickfixstatus.vim and vim-hier.
+>
+  function! s:snowflake_after(...)
+    execute ':QuickfixStatusEnable'
+    execute ':HierUpdate'
+  endfunction
+
+  let g:snowflake_callbacks = {
+    \ 'after_run': function('s:snowflake_after')
+    \ }
+
+==============================================================================
+CHANGELOG						*snowflake-changelog*
+2016-12-31
+- First release
+
+vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:
