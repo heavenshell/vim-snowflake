@@ -2,6 +2,8 @@
 
 An asynchronous Python source code checker for Vim.
 
+![Realtime style check](./assets/vim-snowflake.gif)
+
 ## Features
 
 ### Realtime check
@@ -13,3 +15,7 @@ vim-snowflake detect source code change immediately and upddate results(no need 
 ### Async
 
 Using Vim job and channels for asynchronous check.
+
+## License
+
+New BSD License
