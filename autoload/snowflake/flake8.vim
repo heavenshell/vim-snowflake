@@ -10,6 +10,10 @@ let s:format = '%(path)s|%(row)d|%(col)d|%(code)s|%(text)s'
 
 function! s:parse(msg)
   let outputs = []
+  if a:msg !~ '|'
+    return outputs
+  endif
+
   let results = split(a:msg, '|')
 
   " TODO Error code.
