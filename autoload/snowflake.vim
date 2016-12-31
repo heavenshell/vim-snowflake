@@ -40,11 +40,10 @@ function! snowflake#init() abort
 
   call snowflake#detect_linter()
 
-  augroup snowflake
+  augroup snowflake_group
     autocmd!
     autocmd BufWritePost *.py call snowflake#flake8#run()
     autocmd InsertLeave *.py call snowflake#flake8#run()
-    autocmd TextChanged,TextChangedI *.py call snowflake#flake8#run()
   augroup END
 
   if has_key(g:snowflake_callbacks, 'after_init')
