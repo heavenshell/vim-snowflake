@@ -6,6 +6,12 @@ An asynchronous Python source code checker for Vim.
 
 ## Features
 
+Install flake8 by `venv`, `virtualenv` whatever you like.
+
+```console
+pip install flake8
+```
+
 ### Realtime check
 
 A lot of style checker triggered by save buffer.
