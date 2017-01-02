@@ -1,43 +1,30 @@
-" File: snowflake#flake8.vim
-" Author: Shinya Ohyanagi <sohyanagi@gmail.com>
-" WebPage:  http://github.com/heavenshell/vim-snowflake/
-" Description: Check Python source code by Flake8.
-" License: BSD, see LICENSE for more details.
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:format = '%(path)s|%(row)d|%(col)d|%(code)s|%(text)s'
+let s:mypy_executable = 0
+if executable(g:snowflake_mypy)
+  let s:mypy_executable = 1
+endif
 
 function! s:parse(msg)
   let outputs = []
-  if a:msg !~ '|'
+  if a:msg =~ 'note'
     return outputs
   endif
 
-  let results = split(a:msg, '|')
-
-  " TODO Error code.
-  let level = 'E'
+  let results = split(a:msg, ':')
   let code = results[3]
-  if code =~ 'E'     " PEP8 runtime errors
-    if code == 'E901' || code == 'E902' || code == 'E999'
-      let level = 'E'
-    else
-      let level = 'W'
-    endif
-  elseif code =~ 'F' " Flake8 runtime errors
-    let level = 'E'
-  elseif code =~ 'W' " PEP8 errors & warings
-    let level = 'W'
-  elseif code =~ 'D' " Naming (PEP8) & docstring (PEP257) conventions
+  let level = 'E'
+
+  if code !~ 'error'
     let level = 'W'
   endif
 
   call add(outputs, {
         \ 'filename': results[0],
         \ 'lnum': results[1],
-        \ 'col': results[2],
-        \ 'text': '[Flake8]' . ' ' . code . ' ' . results[4],
+        \ 'col': str2nr(results[2]) + 1,
+        \ 'text': '[MyPy]' . results[4],
         \ 'type': level
         \})
 
@@ -45,7 +32,11 @@ function! s:parse(msg)
 endfunction
 
 function! s:callback(ch, msg)
+  " Ignore `note` message.
   let outputs = s:parse(a:msg)
+  if len(outputs) == 0
+    return
+  endif
 
   if len(outputs) == 0 && len(getqflist()) == 0
     " No Errors. Clear quickfix then close window if exists.
@@ -66,27 +57,29 @@ function! s:exit_callback(c, msg) abort
   endif
 endfunction
 
-function! snowflake#flake8#run() abort
+function! snowflake#mypy#run() abort
   if has_key(g:snowflake_callbacks, 'before_run')
     call g:snowflake_callbacks['before_run']()
+  endif
+  if s:mypy_executable == 0
+    return
   endif
   if exists('s:job') && job_status(s:job) != 'stop'
     call job_stop(s:job)
   endif
 
-  call setqflist([], 'r')
   let file = expand('%:p')
-  let linter = snowflake#linter()
-  if linter == ''
-    return
-  endif
-  let cmd = printf('%s --format %s --stdin-display-name=%s', linter, s:format, file)
-  if g:snowflake_ignore != ''
-    let cmd = cmd . printf(' --ignore %s', g:snowflake_ignore)
-  endif
+  " mypy --shadow-file is insteadof stdin.
+  " Write current buffer to temp file and send to mypy.
+  let lines = getline(1, '$')
+  let tmp = tempname()
+  call writefile(lines, tmp)
 
-  " Read from stdin.
-  let cmd = cmd . ' -'
+  " TODO --silent-imports will be deprecated since mypy 0.4.7
+  let cmd = printf('mypy --incremental --silent-imports --show-column-numbers --shadow-file %s %s %s', file, tmp, file)
+  if g:snowflake_mypy_fast_parser == 1
+    let cmd = cmd . ' --fast-parser'
+  endif
 
   let s:job = job_start(cmd, {
         \ 'callback': {c, m -> s:callback(c, m)},

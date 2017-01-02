@@ -39,9 +39,9 @@ snowflake.vim execute `snowflake#init()` on start.
 
 ==============================================================================
 VARIABLES					*snowflake-variables*
-g:snowflake_enable_init_onstart			*g:snowflake_enable_init*
+g:snowflake_enable_init				*g:snowflake_enable_init*
 		Run snowflke#init() at file loaded.
-		
+
 		Default value is 1(Run snowflake#init())
 
 g:snowflake_linters				*g:snowflake_linters*
@@ -58,6 +58,16 @@ g:snowflake_ignore				*g:snowflake_ignore*
 		Ignore options.
 
 		Default value is ''(nothing to ignore)
+
+g:snowflake_mypy				*g:snowflake_mypy*
+		MyPy entrypoint.*
+
+		Default value is 'mypy'
+
+g:snowflake_mypy_fast_parser			*g:snowflake_mypy_fast_parser*
+		Enable MyPy `--fast-parser` option.
+
+		Default value is 0(Do not use --fast-parser option)
 
 g:snowflake_callbacks				*g:snowflake_callbacks*
 		Hook points. User can inject various functions to snowflke.
@@ -90,11 +100,15 @@ e.g.
   let g:snowflake_callbacks = {
     \ 'after_run': function('s:snowflake_after')
     \ }
+  autocmd BufWritePost *.py call snowflake#run()
+  autocmd InsertLeave *.py call snowflake#run()
+  autocmd TextChanged,TextChangedI *.py call snowflake#run()
 
 ==============================================================================
 CHANGELOG						*snowflake-changelog*
 2017-01-02
 - Add callbacks
+- Add MyPy support(Experimental)
 
 2016-12-31
 - First release

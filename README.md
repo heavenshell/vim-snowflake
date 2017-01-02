@@ -23,7 +23,9 @@ vim-snowflake detect source code change immediately and upddate results(no need 
 TextChange and TextChangeI event can detect more realtime.
 
 ```viml
-autocmd TextChanged,TextChangedI *.py call snowflake#flake8#run()
+autocmd BufWritePost *.py call snowflake#run()
+autocmd InsertLeave *.py call snowflake#run()
+autocmd TextChanged,TextChangedI *.py call snowflake#run()
 ```
 
 ### Async
@@ -33,6 +35,7 @@ Using Vim's job and channels features for asynchronous check.
 ### Style checkers
 
 - Flake8
+- MyPy(Experimental support)
 
 ## Configurations
 
@@ -47,7 +50,8 @@ snowflake have some hook points to inject various functions.
 |`before_run` |Inject to snowflake#flake8#run() before called|
 |`after_run`  |Inject to snowflake#flake8#run() after called |
 
-#### Example
+
+#### Run Flake8, MyPy, QuickFixStatus and Vim-Hier
 
 ```viml
 function! s:snowflake_after(...)
@@ -59,7 +63,34 @@ let g:snowflake_callbacks = {
   \ 'after_init': function('snowflake#flake8#run'),
   \ 'after_run': function('s:snowflake_after')
   \ }
+
+autocmd BufWritePost *.py call snowflake#flake8#run()
+autocmd InsertLeave *.py call snowflake#flake8#run()
+autocmd TextChanged,TextChangedI *.py call snowflake#flake8#run()
 ```
+
+- Execute right after source code open
+- Show QuickFix error in statusline, and highlight QuickFix errors run
+  quickfixstatus.vim and vim-hier.
+
+#### Run Flake8, MyPy, QuickFixStatus and Vim-Hier.
+
+```viml
+function! s:snowflake_after(...)
+  execute ':QuickfixStatusEnable'
+  execute ':HierUpdate'
+endfunction
+
+let g:snowflake_callbacks = {
+  \ 'after_init': function('snowflake#flake8#run'),
+  \ 'after_run': function('s:snowflake_after')
+  \ }
+
+autocmd BufWritePost *.py call snowflake#run()
+autocmd InsertLeave *.py call snowflake#run()
+autocmd TextChanged,TextChangedI *.py call snowflake#run()
+```
+
 - Execute right after source code open
 - Show QuickFix error in statusline, and highlight QuickFix errors run
   quickfixstatus.vim and vim-hier.
