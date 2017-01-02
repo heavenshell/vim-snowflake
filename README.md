@@ -35,7 +35,7 @@ Using Vim's job and channels features for asynchronous check.
 ### Style checkers
 
 - Flake8
-- MyPy(Experimental support)
+- Mypy(Experimental support)
 
 ## Configurations
 
@@ -51,7 +51,7 @@ snowflake have some hook points to inject various functions.
 |`after_run`  |Inject to snowflake#flake8#run() after called |
 
 
-#### Run Flake8, MyPy, QuickFixStatus and Vim-Hier
+#### Run Flake8, Mypy, QuickFixStatus and Vim-Hier
 
 ```viml
 function! s:snowflake_after(...)
@@ -73,7 +73,7 @@ autocmd TextChanged,TextChangedI *.py call snowflake#flake8#run()
 - Show QuickFix error in statusline, and highlight QuickFix errors run
   quickfixstatus.vim and vim-hier.
 
-#### Run Flake8, MyPy, QuickFixStatus and Vim-Hier.
+#### Run Flake8, Mypy, QuickFixStatus and Vim-Hier.
 
 ```viml
 function! s:snowflake_after(...)

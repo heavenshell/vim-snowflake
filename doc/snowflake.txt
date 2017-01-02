@@ -1,6 +1,6 @@
 *snowflake*	Vim plguin for Flow.
 
-Version: 0.2.0
+Version: 0.2.1
 Author: Shinya Ohynagi <sohyanagi@gmail.com>
 Repository: http://github.com/heavenshell/vim-snowflake/
 License: BSD, see LICENSE for more details.
@@ -37,6 +37,35 @@ Configure:
 
 snowflake.vim execute `snowflake#init()` on start.
 
+Example .vimrc
+
+- Execute checker write after open source code.
+>
+  function! s:snowflake_after(...)
+    execute ':QuickfixStatusEnable'
+    execute ':HierUpdate'
+  endfunction
+
+  let g:snowflake_callbacks = {
+    \ 'after_init': function('snowflake#flake8#run'),
+    \ }
+>
+- Show QuickFix error in statusline, and highlight QuickFix errors run
+  quickfixstatus.vim and vim-hier.
+>
+  function! s:snowflake_after(...)
+    execute ':QuickfixStatusEnable'
+    execute ':HierUpdate'
+  endfunction
+
+  let g:snowflake_callbacks = {
+    \ 'after_run': function('s:snowflake_after')
+    \ }
+  autocmd BufWritePost *.py call snowflake#run()
+  autocmd InsertLeave *.py call snowflake#run()
+  autocmd TextChanged,TextChangedI *.py call snowflake#run()
+>
+
 ==============================================================================
 VARIABLES					*snowflake-variables*
 g:snowflake_enable_init				*g:snowflake_enable_init*
@@ -60,55 +89,28 @@ g:snowflake_ignore				*g:snowflake_ignore*
 		Default value is ''(nothing to ignore)
 
 g:snowflake_mypy				*g:snowflake_mypy*
-		MyPy entrypoint.*
+		Mypy entrypoint.
 
 		Default value is 'mypy'
 
 g:snowflake_mypy_fast_parser			*g:snowflake_mypy_fast_parser*
-		Enable MyPy `--fast-parser` option.
+		Enable Mypy `--fast-parser` option.
 
 		Default value is 0(Do not use --fast-parser option)
 
 g:snowflake_callbacks				*g:snowflake_callbacks*
 		Hook points. User can inject various functions to snowflke.
 
-		*before_init*	Inject to snowflake#init() before called
-		*after_init*	Inject to snowflake#init() after called
-		*before_run*	Inject to snowflake#flake8#run() before called
-		*after_run* 	Inject to snowflake#flake8#run() after called
-
-e.g.
-- Execute checker write after open source code.
->
-  function! s:snowflake_after(...)
-    execute ':QuickfixStatusEnable'
-    execute ':HierUpdate'
-  endfunction
-
-  let g:snowflake_callbacks = {
-    \ 'after_init': function('snowflake#flake8#run'),
-    \ }
-
-- Show QuickFix error in statusline, and highlight QuickFix errors run
-  quickfixstatus.vim and vim-hier.
->
-  function! s:snowflake_after(...)
-    execute ':QuickfixStatusEnable'
-    execute ':HierUpdate'
-  endfunction
-
-  let g:snowflake_callbacks = {
-    \ 'after_run': function('s:snowflake_after')
-    \ }
-  autocmd BufWritePost *.py call snowflake#run()
-  autocmd InsertLeave *.py call snowflake#run()
-  autocmd TextChanged,TextChangedI *.py call snowflake#run()
+		before_init	Inject to snowflake#init() before called
+		after_init	Inject to snowflake#init() after called
+		before_run	Inject to snowflake#flake8#run() before called
+		after_run 	Inject to snowflake#flake8#run() after called
 
 ==============================================================================
 CHANGELOG						*snowflake-changelog*
 2017-01-02
 - Add callbacks
-- Add MyPy support(Experimental)
+- Add Mypy support(Experimental)
 
 2016-12-31
 - First release

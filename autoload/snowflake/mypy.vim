@@ -8,11 +8,15 @@ endif
 
 function! s:parse(msg)
   let outputs = []
-  if a:msg =~ 'note'
+  if a:msg =~ 'note' || a:msg =~ "mypy: can't read file"
     return outputs
   endif
+  echomsg a:msg
 
   let results = split(a:msg, ':')
+  if len(results) != 5
+    return outputs
+  endif
   let code = results[3]
   let level = 'E'
 
@@ -24,7 +28,7 @@ function! s:parse(msg)
         \ 'filename': results[0],
         \ 'lnum': results[1],
         \ 'col': str2nr(results[2]) + 1,
-        \ 'text': '[MyPy]' . results[4],
+        \ 'text': '[Mypy]' . results[4],
         \ 'type': level
         \})
 
@@ -77,6 +81,7 @@ function! snowflake#mypy#run() abort
 
   " TODO --silent-imports will be deprecated since mypy 0.4.7
   let cmd = printf('mypy --incremental --silent-imports --show-column-numbers --shadow-file %s %s %s', file, tmp, file)
+  "let cmd = printf('mypy --incremental --show-column-numbers %s', file)
   if g:snowflake_mypy_fast_parser == 1
     let cmd = cmd . ' --fast-parser'
   endif
