@@ -1,7 +1,7 @@
 " File: snowflake.vim
 " Author: Shinya Ohyanagi <sohyanagi@gmail.com>
 " WebPage:  http://github.com/heavenshell/vim-snowflake/
-" Description: An asynchronous Python source code checker.
+" Description: An asynchronous Python source code checker for Vim.
 " License: BSD, see LICENSE for more details.
 let s:save_cpo = &cpo
 set cpo&vim

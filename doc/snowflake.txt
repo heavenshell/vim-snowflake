@@ -37,18 +37,20 @@ Configure:
 
 snowflake.vim execute `snowflake#init()` on start.
 
-+ Add |autocmd| settings.
-
 ==============================================================================
 VARIABLES					*snowflake-variables*
-g:snowflake_linters				*g:g:snowflake_linters*
+g:snowflake_enable_init_onstart			*g:snowflake_enable_init*
+		Run snowflke#init() at file loaded.
+		
+		Default value is 1(Run snowflake#init())
+
+g:snowflake_linters				*g:snowflake_linters*
 		Python style checker's name.
 
 		Default value is 'flake8'
 
 g:snowflake_enable_quickfix			*g:snowflake_enable_quickfix*
-		Enable to open QuickFix window automatically
-		(only flow project)
+		Enable to open QuickFix window automatically.
 
 		Default value is 0(Do not open automatically)
 
@@ -60,10 +62,10 @@ g:snowflake_ignore				*g:snowflake_ignore*
 g:snowflake_callbacks				*g:snowflake_callbacks*
 		Hook points. User can inject various functions to snowflke.
 
-		*before_init* : Inject to snowflake#init() before called
-		*after_init* : Inject to snowflake#init() after called
-		*before_run* : Inject to snowflake#flake8#run() before called
-		*after_run* : Inject to snowflake#flake8#run() after called
+		*before_init*	Inject to snowflake#init() before called
+		*after_init*	Inject to snowflake#init() after called
+		*before_run*	Inject to snowflake#flake8#run() before called
+		*after_run* 	Inject to snowflake#flake8#run() after called
 
 e.g.
 - Execute checker write after open source code.
@@ -91,6 +93,9 @@ e.g.
 
 ==============================================================================
 CHANGELOG						*snowflake-changelog*
+2017-01-02
+- Add callbacks
+
 2016-12-31
 - First release
 

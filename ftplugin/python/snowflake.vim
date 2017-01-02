@@ -1,3 +1,8 @@
+" File: snowflake.vim
+" Author: Shinya Ohyanagi <sohyanagi@gmail.com>
+" WebPage:  http://github.com/heavenshell/vim-snowflake/
+" Description: An asynchronous Python source code checker for Vim.
+" License: BSD, see LICENSE for more details.
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -15,8 +20,8 @@ command! -buffer Snowflake :call snowflake#flake8#run()
 
 noremap <silent> <buffer> <Plug>(Snowflake) :Snowflake <CR>
 
-let g:snowflake_enable_init_onstart = get(g:, 'snowflake_enable_init_onstart', 1)
-if g:snowflake_enable_init_onstart == 1
+let g:snowflake_enable_init = get(g:, 'snowflake_enable_init', 1)
+if g:snowflake_enable_init == 1
   call snowflake#init()
 endif
 
