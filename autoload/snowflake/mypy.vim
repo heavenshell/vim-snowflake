@@ -2,7 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:mypy_executable = 0
-if executable(g:snowflake_mypy)
+if executable(g:snowflake_mypy_bin)
   let s:mypy_executable = 1
 endif
 
@@ -80,10 +80,10 @@ function! snowflake#mypy#run() abort
   call writefile(lines, tmp)
 
   " TODO --silent-imports will be deprecated since mypy 0.4.7
-  let cmd = printf('mypy --incremental --silent-imports --show-column-numbers --shadow-file %s %s %s', file, tmp, file)
+  let cmd = printf('mypy --show-column-numbers --shadow-file %s %s %s', file, tmp, file)
   "let cmd = printf('mypy --incremental --show-column-numbers %s', file)
-  if g:snowflake_mypy_fast_parser == 1
-    let cmd = cmd . ' --fast-parser'
+  if g:snowflake_mypy_options != ''
+    let cmd = cmd . ' ' . g:snowflake_mypy_options
   endif
 
   let s:job = job_start(cmd, {

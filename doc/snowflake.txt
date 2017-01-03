@@ -88,10 +88,15 @@ g:snowflake_ignore				*g:snowflake_ignore*
 
 		Default value is ''(nothing to ignore)
 
-g:snowflake_mypy				*g:snowflake_mypy*
+g:snowflake_mypy_bin				*g:snowflake_mypy_bin*
 		Mypy entrypoint.
 
 		Default value is 'mypy'
+
+g:snowflake_mypy_options			*g:snowflake_mypy_options*
+		Mypy options.
+
+		Default value is ''
 
 g:snowflake_mypy_fast_parser			*g:snowflake_mypy_fast_parser*
 		Enable Mypy `--fast-parser` option.

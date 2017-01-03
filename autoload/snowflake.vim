@@ -12,8 +12,9 @@ let g:snowflake_linters = get(g:, 'snowflake_linters', [
 let g:snowflake_enable_quickfix = get(g:, 'snowflake_enable_quickfix', 0)
 let g:snowflake_callbacks = get(g:, 'snowflake_callbacks', {})
 let g:snowflake_ignore = ''
-let g:snowflake_mypy = get(g:, 'snowflake_mypy', 'mypy')
-let g:snowflake_mypy_fast_parser = get(g:, 'snowflake_mypy_fast_parser', 0)
+let g:snowflake_mypy_bin = get(g:, 'snowflake_mypy_bin', 'mypy')
+let g:snowflake_mypy_options = get(g:, 'snowflake_mypy_options', '')
+let g:snowfalek_mypy_cache_dir = get(g:, 'snowflake_mypy_cache_dir', '')
 let s:linter = ''
 
 function! snowflake#linter()
