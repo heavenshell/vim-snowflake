@@ -1,5 +1,7 @@
 # vim-snowflake
 
+[![Build Status](https://travis-ci.org/heavenshell/vim-snowflake.svg?branch=master)](https://travis-ci.org/heavenshell/vim-snowflake)
+
 An asynchronous Python source code checker for Vim.
 
 ![Realtime style check](./assets/vim-snowflake.gif)
