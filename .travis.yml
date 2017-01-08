@@ -22,5 +22,5 @@ before_script:
 
 script:
   - cd tests
-  - ./run.sh > /dev/null
+  - ./run.sh
   - cd ..
