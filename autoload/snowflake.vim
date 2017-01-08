@@ -18,14 +18,14 @@ let g:snowfalek_mypy_cache_dir = get(g:, 'snowflake_mypy_cache_dir', '')
 let s:linter = ''
 
 function! snowflake#linter()
-  return s:linter
-endfunction
-
-function! snowflake#detect_linter() abort
   if s:linter != ''
     return s:linter
   endif
 
+  return snowflake#detect_linter()
+endfunction
+
+function! snowflake#detect_linter() abort
   for lint in g:snowflake_linters
     if executable(lint) == 1
       let s:linter = lint
