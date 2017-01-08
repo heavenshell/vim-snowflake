@@ -1,0 +1,13 @@
+set nocompatible
+filetype off
+
+" Clear all rtp.
+set rtp=$VIMRUNTIME
+
+" Add snowflake into rtp.
+set rtp+=../
+filetype plugin indent on
+
+source runner.vim
+
+command! -buffer SnowflakeRunTest :call SnowflakeRunTest()
