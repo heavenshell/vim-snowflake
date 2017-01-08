@@ -51,7 +51,7 @@ snowflake have some hook points to inject various functions.
 |`after_run`  |Inject to snowflake#flake8#run() after called |
 
 
-#### Run Flake8, Mypy, QuickFixStatus and Vim-Hier
+#### Run Flake8, QuickFixStatus and Vim-Hier
 
 ```viml
 function! s:snowflake_after(...)
