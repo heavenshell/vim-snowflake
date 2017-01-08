@@ -8,6 +8,10 @@ function! TestShouldShowQuickFix()
   let qflist = getqflist()
   call assert_equal(len(qflist), 1)
   let qf = qflist[0]
+  call assert_equal(qf['text'], "[Flake8] E231 missing whitespace after ','")
+  call assert_equal(qf['lnum'], 2)
+  call assert_equal(qf['col'], 13)
+  call assert_equal(qf['type'], 'W')
 endfunction
 
 function! TestShouldRunCallback()
