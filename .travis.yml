@@ -1,4 +1,10 @@
-language: vim
+language: python
+
+python:
+  - 3.5
+  - 3.6
+
+before_install: pip install -r ./tests/fixtures/requirements.txt
 
 install:
   - pwd
@@ -16,5 +22,5 @@ before_script:
 
 script:
   - cd tests
-  - ./run.sh > /dev/null && echo Success || echo Fail
+  - ./run.sh > /dev/null
   - cd ..
