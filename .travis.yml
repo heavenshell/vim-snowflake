@@ -17,6 +17,10 @@ install:
   - export VIM_EXE=$HOME/bin/vim/bin/vim
   - cd $HOME/build/heavenshell/vim-snowflake
 
+cache:
+  directories:
+    - $HOME/bin/vim
+
 before_script:
   - $HOME/bin/vim/bin/vim --version
 
