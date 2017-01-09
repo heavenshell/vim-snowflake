@@ -8,18 +8,14 @@ before_install: pip install -r ./tests/fixtures/requirements.txt
 
 install:
   - pwd
-  - git clone https://github.com/vim/vim /tmp/vim
-  - mkdir ~/bin
-  - cd /tmp/vim
   - sudo apt-get install -y gettext libncurses5-dev libacl1-dev libgpm-dev
-  - ./configure --with-features=huge --enable-fail-if-missing --enable-pythoninterp --prefix=$HOME/bin/vim
-  - make && make install
-  - export VIM_EXE=$HOME/bin/vim/bin/vim
+  - ( if [ ! -d ~/vim/bin ]; then git clone https://github.com/vim/vim /tmp/vim && cd /tmp/vim && ./configure ./configure --with-features=huge --enable-fail-if-missing --enable-pythoninterp --prefix=$HOME/bin/vim && make && make install; fi )
+  - export VIM_EXE=$HOME/vim/bin/vim
   - cd $HOME/build/heavenshell/vim-snowflake
 
 cache:
   directories:
-    - $HOME/bin
+    - $HOME/vim
 
 before_script:
   - $HOME/bin/vim/bin/vim --version
