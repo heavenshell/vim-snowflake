@@ -19,7 +19,7 @@ install:
 
 cache:
   directories:
-    - $HOME/bin/vim
+    - $HOME/bin
 
 before_script:
   - $HOME/bin/vim/bin/vim --version
