@@ -1,6 +1,6 @@
 *snowflake*	Vim plguin for Flow.
 
-Version: 0.3.0
+Version: 0.3.1
 Author: Shinya Ohynagi <sohyanagi@gmail.com>
 Repository: http://github.com/heavenshell/vim-snowflake/
 License: BSD, see LICENSE for more details.
@@ -113,6 +113,9 @@ g:snowflake_callbacks				*g:snowflake_callbacks*
 
 ==============================================================================
 CHANGELOG						*snowflake-changelog*
+2017-01-25
+- Fix large buffer raise 'E631: write_buf_line()'
+
 2017-01-08
 - Add E2E tests
 
