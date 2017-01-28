@@ -85,15 +85,37 @@ function! snowflake#flake8#run() abort
     let cmd = cmd . printf(' --ignore %s', g:snowflake_ignore)
   endif
 
+  let bufnum = bufnr('%')
+  let input = join(getbufline(bufnum, 1, '$'), "\n") . "\n"
+
   " Read from stdin.
   let cmd = cmd . ' -'
+
+  " let s:job = job_start(cmd, {
+  "       \ 'callback': {c, m -> s:callback(c, m)},
+  "       \ 'exit_cb': {c, m -> s:exit_callback(c, m)},
+  "       \ 'in_io': 'buffer',
+  "       \ 'in_name': file,
+  "       \ 'timeout': 10000,
+  "       \ })
 
   let s:job = job_start(cmd, {
         \ 'callback': {c, m -> s:callback(c, m)},
         \ 'exit_cb': {c, m -> s:exit_callback(c, m)},
-        \ 'in_io': 'buffer',
-        \ 'in_name': file,
+        \ 'in_mode': 'nl',
         \ })
+  " https://github.com/w0rp/ale/issues/39
+  " https://github.com/macvim-dev/macvim/issues/402
+  " MacVim throws an exception `E631: write_buf_line()` when buffer is
+  " getting larger.
+  " So, read buffer manually and send to channel.
+  " This hack is w0rp's ale
+  " https://github.com/w0rp/ale/blob/3083d05afd3818e5db33f066392935bbf828e263/plugin/ale/zmain.vim#L277-L284
+  let channel = job_getchannel(s:job)
+  if ch_status(channel) ==# 'open'
+    call ch_sendraw(channel, input)
+    call ch_close_in(channel)
+  endif
 endfunction
 
 let &cpo = s:save_cpo
