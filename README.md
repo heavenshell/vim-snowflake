@@ -45,12 +45,12 @@ Using Vim's job and channels features for asynchronous check.
 
 snowflake have some hook points to inject various functions.
 
-|Hook point   |Hook timing                                   |
-|:------------|:---------------------------------------------|
-|`before_init`|Inject to snowflake#init() before called      |
-|`after_init` |Inject to snowflake#init() after called       |
-|`before_run` |Inject to snowflake#flake8#run() before called|
-|`after_run`  |Inject to snowflake#flake8#run() after called |
+|Hook point   |Hook timing                                          |
+|:------------|:----------------------------------------------------|
+|`before_init`|Inject to snowflake#init() before called             |
+|`after_init` |Inject to snowflake#init() after called              |
+|`before_run` |Inject to snowflake#{flake8,mypy}#run() before called|
+|`after_run`  |Inject to snowflake#{flake8,mypy}#run() after called |
 
 
 #### Run Flake8, QuickFixStatus and Vim-Hier
@@ -84,7 +84,7 @@ function! s:snowflake_after(...)
 endfunction
 
 let g:snowflake_callbacks = {
-  \ 'after_init': function('snowflake#flake8#run'),
+  \ 'after_init': function('snowflake#run'),
   \ 'after_run': function('s:snowflake_after')
   \ }
 
